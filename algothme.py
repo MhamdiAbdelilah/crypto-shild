@@ -1,4 +1,11 @@
 
+"""
+key 128 bit 
+cet cle je veux que elle developpe a 8 sous-cles
+key 192 bit
+"""
+
+
 import tkinter as tk
 from tkinter import filedialog
 
