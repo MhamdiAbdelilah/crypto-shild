@@ -1,0 +1,55 @@
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import ttk
+
+def open_file():
+    file = filedialog.askopenfilename()
+    if file:
+        # Affiche le nom du fichier sélectionné dans le label
+        file_label.config(text=f"Fichier sélectionné : {file}")
+
+def crypter():
+    # Ajoutez ici le code pour crypter
+    print("Cryptage en cours...")
+
+def decrypter():
+    # Ajoutez ici le code pour décrypter
+    print("Décryptage en cours...")
+
+# Création de la fenêtre principale
+root = tk.Tk()
+root.title("Crypto-Shild")
+
+# Conversion de centimètres en pouces, puis en pixels
+largeur_cm = 15
+hauteur_cm = 15
+largeur_px = int((largeur_cm / 2.54) * 96)
+hauteur_px = int((hauteur_cm / 2.54) * 96)
+
+# Mise à jour de la géométrie de la fenêtre principale
+root.geometry(f'{largeur_px}x{hauteur_px}')
+
+logo = tk.PhotoImage(file='logo.png')
+root.iconphoto(False, logo)
+
+# Création des onglets
+tab_control = ttk.Notebook(root)
+
+tab1 = tk.Frame(tab_control)
+tab2 = tk.Frame(tab_control)
+
+# Bouton d'importation de fichier
+btn_import = tk.Button(root, text="Sélectionner le fichier", command=open_file)
+btn_import.place(relx=0.5, rely=0.1, anchor='center')  # Place le bouton en haut
+
+# Label pour afficher le nom du fichier sélectionné
+file_label = tk.Label(root, text="Aucun fichier sélectionné")
+file_label.place(relx=0.5, rely=0.15, anchor='center')  # Place le label en dessous du bouton
+
+tab_control.add(tab1, text='Crypter')
+tab_control.add(tab2, text='Décrypter')
+
+# Placement des widgets
+tab_control.pack(expand=1, fill='both')
+
+root.mainloop()
