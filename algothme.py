@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 import numpy as np
+import os
 
 
 def import_file(path: str):
@@ -8,7 +9,7 @@ def import_file(path: str):
         return file.read()
 
 
-def export_file(path: str, content: str):
+def export_file(path: str, content: bytes):
 
     # remove extantion
     dot_index = path.rfind('.')
@@ -53,11 +54,12 @@ def get_path():
     return file_path
 
 
-def split_by_n(seq, n):
-    """A generator to divide a sequence into chunks of n units."""
-    while seq:
-        yield seq[:n]
-        seq = seq[n:]
+def split_by_n(rawFile: bytes, n: int):
+    xFile = bytearray()
+    for i in range(0, len(rawFile), n):
+        chunk = rawFile[i:i+16]
+        xFile.extend(chunk)
+    return xFile
 
 
 def to_matrix44(file: np.array):
@@ -65,27 +67,46 @@ def to_matrix44(file: np.array):
     return list
 
 
-path: str = get_path()
-file: str = import_file(path)
-file_list: np.array = list(split_by_n(file, 16))
-# import the key here
-key = import_file()
+def expand_key(key: bytes) -> list[bytes]:
+    rKey: list[bytes] = []
 
-# declar the arry where we save the result of encreption or decreption
-xfile = np.array([])
-for i in range(len(file_list)):
-    list1: list = list(split_by_n(file_list[i], 1))
-    list1 = np.array(list1)
-    try:
-        list1 = np.reshape(list1, (4, 4))
-    except:
-        list1 = np.array(list1)
-    # the round shoud start from here
+    return rKey
 
-    # to her
+def generate_key() -> bytes:
+    return os.urandom(16)
+
+def round(matrix: bytes, rKey: bytes) -> None:
 
     # save the list in xfile
-    xfile = np.append(xfile, list1)
+    xfile.extend(bytes(matrix))
+
+
+
+
+file_path: str = get_path()
+file: str = import_file(file_path)
+file_list: bytearray = split_by_n(file, 16)
+# import the key here
+key_path: str = get_path()
+key: str = import_file(key_path)
+
+# genart round key
+rkeys = expand_key(key)
+
+# declar the arry where we save the result of encreption or decreption
+xfile = bytearray([])
+
+for i in range(len(file_list)):
+    list1: bytearray = split_by_n(file_list[i],1)
+    list1 = np.array(list1)
+    try:
+        matrix = np.reshape(list1, (4, 4))
+    except:
+        matrix = np.array(list1)
+    # the round shoud start from here
+    round(matrix, rkeys[i])
+    # to her
+
 
 # the last round here
 
