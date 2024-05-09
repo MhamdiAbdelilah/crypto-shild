@@ -57,14 +57,20 @@ def get_path():
 def split_by_n(rawFile: bytes, n: int):
     xFile = bytearray()
     for i in range(0, len(rawFile), n):
-        chunk = rawFile[i:i+16]
+        chunk = rawFile[i:i+n]
         xFile.extend(chunk)
     return xFile
 
 
-def to_matrix44(file: np.array):
-    list = np.reshape(file, 4, 4)
-    return list
+def to_matrix44( array_1D: np.array) -> np.array:
+    try:
+        array_2D: np.array = array_1D.reshape(4, 4)
+    except:
+        padding_needed = 16 - array_1D.size
+        padded_array = np.pad(array_1D, (0, padding_needed),
+                              'constant', constant_values=0)
+        array_2D: np.array = padded_array.reshape(4, 4)
+    return array_2D
 
 
 def expand_key(key: bytes) -> list[bytes]:
@@ -72,15 +78,15 @@ def expand_key(key: bytes) -> list[bytes]:
 
     return rKey
 
-def generate_key() -> bytes:
-    return os.urandom(16)
+
+def generate_key(n) -> bytes:
+    return os.urandom(n)
+
 
 def round(matrix: bytes, rKey: bytes) -> None:
 
     # save the list in xfile
     xfile.extend(bytes(matrix))
-
-
 
 
 file_path: str = get_path()
@@ -97,7 +103,7 @@ rkeys = expand_key(key)
 xfile = bytearray([])
 
 for i in range(len(file_list)):
-    list1: bytearray = split_by_n(file_list[i],1)
+    list1: bytearray = split_by_n(file_list[i], 1)
     list1 = np.array(list1)
     try:
         matrix = np.reshape(list1, (4, 4))
