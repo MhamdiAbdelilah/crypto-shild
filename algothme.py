@@ -1,10 +1,11 @@
+import hashlib
 import tkinter as tk
 from tkinter import filedialog
 import numpy as np
 import os
 
 
-def import_file(path: str):
+def import_file(path: str) -> bytes:
     with open(path, 'rb') as file:
         return file.read()
 
@@ -62,7 +63,7 @@ def split_by_n(rawFile: bytes, n: int):
     return xFile
 
 
-def to_matrix44( array_1D: np.array) -> np.array:
+def to_matrix44(array_1D: np.array) -> np.array:
     try:
         array_2D: np.array = array_1D.reshape(4, 4)
     except:
@@ -73,48 +74,83 @@ def to_matrix44( array_1D: np.array) -> np.array:
     return array_2D
 
 
-def expand_key(key: bytes) -> list[bytes]:
-    rKey: list[bytes] = []
-
-    return rKey
+def create_subkey(main_key, identifier: str, nbr: int) -> bytes:
+    # Combine the main key with a unique identifier
+    combined = main_key + identifier.encode()
+    subkey = hashlib.sha256(combined).digest()[:nbr]
+    return subkey
 
 
 def generate_key(n) -> bytes:
     return os.urandom(n)
 
 
-def round(matrix: bytes, rKey: bytes) -> None:
+def round(file: bytes, rKey: bytes) -> bytearray:
+    result: bytearray = bytearray()
 
-    # save the list in xfile
-    xfile.extend(bytes(matrix))
+    for _i in range(0, len(file), 16):
+        chunk_byts: bytearray = bytearray(16)
+        chunk: bytes = file[_i:_i+16]
+        chunk = split_by_n(chunk, 1)
 
+        chunk_np: np.array = np.array(chunk, dtype='S3')
+        chunk_matrix = to_matrix44(chunk_np)
+
+        chunk_matrix = mixColome(chunk_matrix, int.from_bytes(rKey))
+        chunk_matrix = mixRow(chunk_matrix, int.from_bytes(rKey))
+
+        chunk_byts = chunk_matrix.flatten()
+
+        chunk_byts = bytearray(int(byte) for byte in chunk_byts)
+        chunk_byts1 = bytearray(a ^ b for a, b in zip(chunk_byts, rKey))  # XOR
+
+        result.extend(bytes(chunk_byts1))
+
+    return result
+
+
+def mixColome(matrix: np.array, n: int) -> np.array:
+    result: np.array = np.zeros((4, 4), dtype='S3')
+
+    for i in range(len(matrix)):
+        for j in range(4):
+
+            result[i][j] = (matrix[i][(j-n) % 4])
+    return result
+
+
+def mixRow(matrix: np.array, n: int) -> np.array:
+    result: np.array = np.zeros((4, 4), dtype='S3')
+    for i in range(len(matrix)):
+        result[i] = matrix[(i-n) % 4]
+    return result
+
+
+nround = 8  # nomber of rounds
 
 file_path: str = get_path()
-file: str = import_file(file_path)
-file_list: bytearray = split_by_n(file, 16)
+file: bytes = import_file(file_path)
 # import the key here
 key_path: str = get_path()
-key: str = import_file(key_path)
+key: bytes = import_file(key_path)
 
 # genart round key
-rkeys = expand_key(key)
+rKeys: list[bytes] = []
+for i in range(nround):  # creat round Keys
+    identifier = f'abdelilah{i}'
+    rKeys.append(create_subkey(key, identifier, 16))
 
 # declar the arry where we save the result of encreption or decreption
-xfile = bytearray([])
+file_content: bytes = file
+for r in range(nround):
+    tour: bytearray = round(file_content, rKeys[r])
+    file_content = bytes(tour)
 
-for i in range(len(file_list)):
-    list1: bytearray = split_by_n(file_list[i], 1)
-    list1 = np.array(list1)
-    try:
-        matrix = np.reshape(list1, (4, 4))
-    except:
-        matrix = np.array(list1)
-    # the round shoud start from here
-    round(matrix, rkeys[i])
-    # to her
+xfile: bytes = file_content
 
+# export file
 
-# the last round here
+# export_file(add_tag(file_path), xfile)
+export_file(remove_tag(file_path),xfile)
 
-
-print(xfile)
+print(len(xfile))
