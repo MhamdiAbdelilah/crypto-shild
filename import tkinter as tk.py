@@ -17,11 +17,11 @@ def decrypter():
 
 
 # Partie correspondant à l'onglet "Crypter"
-def setup_crypter_tab(tab):
+def onglet_crypter_tab(tab):
     text1_label = tk.Label(tab, text="Sélectionner un document à crypter : ", relief="flat", padx=10, pady=5)
     text1_label.place(x=1, y=35)
 
-    def open_file():
+    def choisir_file():
         file = filedialog.askopenfilename()
         if file:
             file_label.config(text=f"Fichier sélectionné : {file}")
@@ -31,8 +31,8 @@ def setup_crypter_tab(tab):
     file_label.place(x=10, y=70)
 
     # Bouton d'importation de fichier
-    btn_import = tk.Button(tab, text="...", command=open_file)
-    btn_import.config(width=4, height=1, bd=2)
+    btn_import = tk.Button(tab, text="...", command=choisir_file)
+    btn_import.config(width=4, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_import.place(relx=0.86, rely=0.132)
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
@@ -66,7 +66,7 @@ def setup_crypter_tab(tab):
 
     # Bouton de sauvegarde de fichier
     btn_save = tk.Button(tab, text="Enregistrer", command=save_file)
-    btn_save.config(width=10, height=1, bd=2)
+    btn_save.config(width=10, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_save.place(x=450, y=250)
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
@@ -85,12 +85,12 @@ def setup_crypter_tab(tab):
     cle_label.place(x=10, y=360)
 
     cle_import = tk.Button(tab, text="...", command=cle_file)
-    cle_import.config(width=4, height=1, bd=2)
+    cle_import.config(width=4, height=1, bd=2, cursor="hand2", overrelief="solid")
     cle_import.place(relx=0.86, rely=0.668)
 
     # Bouton confirmer
     btn_confirmer = tk.Button(tab, text="Confirmer", command=None)
-    btn_confirmer.config(width=10, height=1, bd=2)
+    btn_confirmer.config(width=10, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_confirmer.place(x=250, y=480)
 
 
@@ -106,11 +106,11 @@ def setup_crypter_tab(tab):
 
 
 # l'onglet "Décrypter"
-def setup_decrypter_tab(tab):
+def onglet_decrypter_tab(tab):
     text1_label = tk.Label(tab, text="Sélectionner un document à crypter : ", relief="flat", padx=10, pady=5)
     text1_label.place(x=1, y=35)
 
-    def open_file():
+    def choisir_file():
         file = filedialog.askopenfilename()
         if file:
             file_label.config(text=f"Fichier sélectionné : {file}")
@@ -120,8 +120,8 @@ def setup_decrypter_tab(tab):
     file_label.place(x=10, y=70)
 
 
-    btn_import = tk.Button(tab, text="...", command=open_file)
-    btn_import.config(width=4, height=1, bd=2)
+    btn_import = tk.Button(tab, text="...", command=choisir_file)
+    btn_import.config(width=4, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_import.place(relx=0.86, rely=0.132)
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
@@ -146,10 +146,10 @@ def setup_decrypter_tab(tab):
 
 
     def save_file():
-        file = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+        file = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
         if file:
             # ajouter le code pour enregistrer les données dans le fichier sélectionné
-            print(f"Fichier enregistré : {file}")
+            print(f"Le fichier est enregistré dans : {file}")
 
     # Bouton de sauvegarde de fichier
     btn_save = tk.Button(tab, text="Enregistrer", command=save_file)
@@ -157,12 +157,14 @@ def setup_decrypter_tab(tab):
     btn_save.place(x=450, y=250)
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
-    text2_label.place(x=180, y=290, anchor="nw")
+    text2_label.place(x=180, y=290)
 
     text4_label = tk.Label(tab, text="Importer sa clé : ", relief="flat", padx=10, pady=5)
     text4_label.place(x=1, y=320)
 
-    def cle_file():
+    
+
+    def cle():
         file = filedialog.askopenfilename()
         if file:
             cle_label.config(text=f"Clé sélectionnée : {file}")
@@ -171,24 +173,24 @@ def setup_decrypter_tab(tab):
     cle_label = tk.Label(tab, text="Aucune clé sélectionnée", borderwidth=2, relief="sunken", padx=10, pady=5)
     cle_label.place(x=10, y=360)
 
-    cle_import = tk.Button(tab, text="...", command=cle_file)
-    cle_import.config(width=4, height=1, bd=2)
+    cle_import = tk.Button(tab, text="...", command=cle)
+    cle_import.config(width=4, height=1, bd=2, cursor="hand2", overrelief="solid")
     cle_import.place(relx=0.86, rely=0.668)
 
     btn_confirmer = tk.Button(tab, text="Confirmer", command=None)
-    btn_confirmer.config(width=10, height=1, bd=2)
+    btn_confirmer.config(width=10, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_confirmer.place(x=250, y=480)
 
 
     # Griser les options
-    def disable_cryptage_options():
+    def desactiver_options():
         check1.config(state="disabled")
         check2.config(state="disabled")
         check3.config(state="disabled")
         btn_save.config(state="disabled")
 
 
-    disable_cryptage_options()
+    desactiver_options()
 
 
 
@@ -200,20 +202,22 @@ def setup_decrypter_tab(tab):
 
 
 # Création de la fenêtre principale
-root = tk.Tk()
-root.title("Crypto-Shild")
-root.resizable(False, False)
+interface = tk.Tk()
+interface.title("Crypto-Shild")
+logo = tk.PhotoImage(file='logo.png')
+interface.iconphoto(False, logo)
+interface.resizable(False, False)
 
 # Taille de la fenêtre
 largeur_cm = 15
 hauter_cm = 15
 largeur_px = int((largeur_cm / 2.54) * 96)
 hauteur_px = int((largeur_cm / 2.54) * 96)
-root.geometry(f"{largeur_px}x{largeur_px}")
+interface.geometry(f"{largeur_px}x{largeur_px}")
 
 
 # Création des onglets
-tab_control = ttk.Notebook(root)
+tab_control = ttk.Notebook(interface)
 
 tab1 = tk.Frame(tab_control)
 tab2 = tk.Frame(tab_control)
@@ -222,11 +226,11 @@ tab_control.add(tab1, text='Crypter')
 tab_control.add(tab2, text='Décrypter')
 
 # l'onglet "Crypter"
-setup_crypter_tab(tab1)
+onglet_crypter_tab(tab1)
 
 # l'onglet "Décrypter"
-setup_decrypter_tab(tab2)
+onglet_decrypter_tab(tab2)
 
 tab_control.pack(expand=1, fill='both')
 
-root.mainloop()
+interface.mainloop()
