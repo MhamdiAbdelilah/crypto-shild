@@ -1,5 +1,4 @@
 import hashlib
-import tkinter as tk
 from tkinter import filedialog
 import numpy as np
 import os
@@ -36,23 +35,21 @@ def export_file(path: str, content: bytes):
             print("Couldn't save the file. All alternative names are taken.")
 
 
-def add_tag(path):
+def add_tag(path) -> str:
     path = path + '.ecr'
     return path
 
 
-def remove_tag(path):
+def remove_tag(path) -> str:
     if path.endswith('.ecr'):
         path = path[:-4]
     return path
 
-
-def get_path():
-    root = tk.Tk()
-    root.withdraw()
-    file_path = filedialog.askopenfilename()
-    root.destroy()
+def get_path(file_type: str ,file_extension: str) -> str:
+    file_path = filedialog.asksaveasfilename(defaultextension=file_extension, filetypes=[(file_type, file_extension)])
     return file_path
+
+
 
 
 def split_by_n(rawFile: bytes, n: int):
@@ -126,31 +123,28 @@ def mixRow(matrix: np.array, n: int) -> np.array:
     return result
 
 
-nround = 8  # nomber of rounds
+def gen_rKeys(key: bytes, identifier: str, nR: int) -> list[bytes]:
+    rKeys: list[bytes] = []
+    for i in range(nR):
+        rKeys.append(create_subkey(key, f'{identifier}{i}', 16))
+    return rKeys
 
-file_path: str = get_path()
-file: bytes = import_file(file_path)
-# import the key here
-key_path: str = get_path()
-key: bytes = import_file(key_path)
 
-# genart round key
-rKeys: list[bytes] = []
-for i in range(nround):  # creat round Keys
-    identifier = f'abdelilah{i}'
-    rKeys.append(create_subkey(key, identifier, 16))
+def encrypter_file(file: bytes, rKeys: list[bytes], nR: int) -> bytes:
+    file_content: bytes = file
 
-# declar the arry where we save the result of encreption or decreption
-file_content: bytes = file
-for r in range(nround):
-    tour: bytearray = round(file_content, rKeys[r])
-    file_content = bytes(tour)
+    for r in range(nR):
+        tour: bytearray = round(file_content, rKeys[r])
+        file_content = bytes(tour)
 
-xfile: bytes = file_content
+    return file_content
 
-# export file
+def decrypter_file(file: bytes, rKeys: list[bytes], nR: int) -> bytes:
+    file_content: bytes = file
 
-# export_file(add_tag(file_path), xfile)
-export_file(remove_tag(file_path),xfile)
+    for r in range(nR):
+        tour: bytearray = round(file_content, rKeys[r])
+        file_content = bytes(tour)
 
-print(len(xfile))
+    return file_content
+
