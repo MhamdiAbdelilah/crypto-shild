@@ -3,21 +3,8 @@ from tkinter import filedialog
 from tkinter import ttk
 
 
-def crypter():
-    # Ajoutez ici le code pour crypter
-    print("Cryptage en cours...")
-
-def decrypter():
-    print("Décryptage en cours...")
-
-
-
-
-
-
-
 # Partie correspondant à l'onglet "Crypter"
-def onglet_crypter_tab(tab):
+def onglet_crypter(tab):
     text1_label = tk.Label(tab, text="Sélectionner un document à crypter : ", relief="flat", padx=10, pady=5)
     text1_label.place(x=1, y=35)
 
@@ -69,7 +56,7 @@ def onglet_crypter_tab(tab):
     btn_save.config(width=10, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_save.place(x=450, y=255)
 
-    save_file = tk.Label(tab, text="Fichier enregistré", borderwidth=2, relief="sunken", padx=10, pady=5)
+    save_file = tk.Label(tab, text="Ancun enregistré", borderwidth=2, relief="sunken", padx=10, pady=5)
     save_file.place(x=10, y=255)
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
@@ -109,7 +96,7 @@ def onglet_crypter_tab(tab):
 
 
 # l'onglet "Décrypter"
-def onglet_decrypter_tab(tab):
+def onglet_decrypter(tab):
     text1_label = tk.Label(tab, text="Sélectionner un document à décrypter : ", relief="flat", padx=10, pady=5)
     text1_label.place(x=1, y=35)
 
@@ -228,11 +215,9 @@ tab2 = tk.Frame(tab_control)
 tab_control.add(tab1, text='Crypter')
 tab_control.add(tab2, text='Décrypter')
 
-# l'onglet "Crypter"
-onglet_crypter_tab(tab1)
 
-# l'onglet "Décrypter"
-onglet_decrypter_tab(tab2)
+onglet_crypter(tab1)
+onglet_decrypter(tab2)
 
 tab_control.pack(expand=1, fill='both')
 
