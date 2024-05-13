@@ -61,13 +61,16 @@ def onglet_crypter_tab(tab):
     def save_file():
         file = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         if file:
-            # Ici, vous pouvez ajouter le code pour enregistrer les données dans le fichier sélectionné
+            save_file.config(text=f"Fichier enregistré : {file}")
             print(f"Fichier enregistré : {file}")
 
     # Bouton de sauvegarde de fichier
     btn_save = tk.Button(tab, text="Enregistrer", command=save_file)
     btn_save.config(width=10, height=1, bd=2, cursor="hand2", overrelief="solid")
-    btn_save.place(x=450, y=250)
+    btn_save.place(x=450, y=255)
+
+    save_file = tk.Label(tab, text="Fichier enregistré", borderwidth=2, relief="sunken", padx=10, pady=5)
+    save_file.place(x=10, y=255)
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
     text2_label.place(x=180, y=290)
@@ -107,7 +110,7 @@ def onglet_crypter_tab(tab):
 
 # l'onglet "Décrypter"
 def onglet_decrypter_tab(tab):
-    text1_label = tk.Label(tab, text="Sélectionner un document à crypter : ", relief="flat", padx=10, pady=5)
+    text1_label = tk.Label(tab, text="Sélectionner un document à décrypter : ", relief="flat", padx=10, pady=5)
     text1_label.place(x=1, y=35)
 
     def choisir_file():
