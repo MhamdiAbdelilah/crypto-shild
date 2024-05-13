@@ -1,0 +1,18 @@
+def add_tag(path) -> str:
+    path = path + '.ecr'
+    return path
+
+
+def remove_tag(path) -> str:
+    if path.endswith('.ecr'):
+        path = path[:-4]
+    return path
+
+
+path: str = "C:/Users/fiole/Documents/testing/crypto-shild/file.txt"
+taged_path: str = add_tag(path)
+remove_path: str = remove_tag(taged_path)
+
+print(f'path with tag is: {taged_path}')
+print(f'path without tag is: {remove_path}')
+
