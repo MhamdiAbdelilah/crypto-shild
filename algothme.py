@@ -93,8 +93,8 @@ def round(file: bytes, rKey: bytes) -> bytearray:
         chunk_np: np.array = np.array(chunk, dtype='S3')
         chunk_matrix = to_matrix44(chunk_np)
 
-        chunk_matrix = mixColome(chunk_matrix, int.from_bytes(rKey))
-        chunk_matrix = mixRow(chunk_matrix, int.from_bytes(rKey))
+        chunk_matrix = mixColome(chunk_matrix, int.from_bytes(rKey,'little'))
+        chunk_matrix = mixRow(chunk_matrix, int.from_bytes(rKey, 'little'))
 
         chunk_byts = chunk_matrix.flatten()
 
