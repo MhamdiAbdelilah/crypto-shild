@@ -54,13 +54,13 @@ def confirm() -> None:
         
         if onglets.tab(onglets.select(), "text") == 'Crypter':
             file_en: bytes = al.encrypter_file(file,rKeys,n)
-            al.export_file(al.add_tag(file_path),file_en)
+            al.export_file(file_path,file_en)
             print('file encrypted')
             messagebox.showinfo("Information", "Fichier Crypter")
             
         if onglets.tab(onglets.select(), "text") == 'Décrypter':
             file_de: bytes = al.decrypter_file(file,rKeys,n)
-            al.export_file(al.remove_tag(file_path),file_de)
+            al.export_file(file_path,file_de)
             print('file decrypted')
             messagebox.showinfo("Information", "Fichier Décrypter")
             
