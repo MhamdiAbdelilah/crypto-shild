@@ -45,11 +45,11 @@ def remove_tag(path) -> str:
         path = path[:-4]
     return path
 
-def get_path(file_type: str ,file_extension: str) -> str:
-    file_path = filedialog.asksaveasfilename(defaultextension=file_extension, filetypes=[(file_type, file_extension)])
+
+def get_path(file_type: str, file_extension: str) -> str:
+    file_path = filedialog.asksaveasfilename(
+        defaultextension=file_extension, filetypes=[(file_type, file_extension)])
     return file_path
-
-
 
 
 def split_by_n(rawFile: bytes, n: int):
@@ -93,8 +93,8 @@ def round(file: bytes, rKey: bytes) -> bytearray:
         chunk_np: np.array = np.array(chunk, dtype='S3')
         chunk_matrix = to_matrix44(chunk_np)
 
-        chunk_matrix = mixColome(chunk_matrix, int.from_bytes(rKey,'little'))
-        chunk_matrix = mixRow(chunk_matrix, int.from_bytes(rKey, 'little'))
+        chunk_matrix = mixColome(chunk_matrix, 1)
+        chunk_matrix = mixRow(chunk_matrix, 3)
 
         chunk_byts = chunk_matrix.flatten()
 
@@ -102,6 +102,30 @@ def round(file: bytes, rKey: bytes) -> bytearray:
         chunk_byts1 = bytearray(a ^ b for a, b in zip(chunk_byts, rKey))  # XOR
 
         result.extend(bytes(chunk_byts1))
+
+    return result
+
+
+def unround(file: bytes, rKey: bytes) -> bytearray:
+    result: bytearray = bytearray()
+
+    for _i in range(0, len(file), 16):
+        chunk_byts: bytearray = bytearray(16)
+        chunk: bytes = file[_i:_i+16]
+
+        # XOR with rKey
+        chunk_byts1 = bytearray(a ^ b for a, b in zip(chunk, rKey))
+        
+        chunk_np: np.array = np.array(list(chunk_byts1), dtype='S3')
+        
+        chunk_matrix = to_matrix44(chunk_np)
+        chunk_matrix = mixRow(chunk_matrix, -3)
+        chunk_matrix = mixColome(chunk_matrix, -1)
+        
+        chunk_byts = chunk_matrix.flatten()
+        chunk_byts = bytearray(int(byte) for byte in chunk_byts)
+
+        result.extend(bytes(chunk_byts))
 
     return result
 
@@ -129,6 +153,16 @@ def gen_rKeys(key: bytes, identifier: str, nR: int) -> list[bytes]:
         rKeys.append(create_subkey(key, f'{identifier}{i}', 16))
     return rKeys
 
+def remove_null_bytes(byte_array):
+    # Get the last 15 bytes
+    last_15_bytes = byte_array[-15:]
+    file= bytearray(byte_array[:-15])
+    # Remove null bytes
+    cleaned_bytes = bytearray(b for b in last_15_bytes if b != 0)
+    file.extend(cleaned_bytes)
+    return bytes(file)
+
+
 
 def encrypter_file(file: bytes, rKeys: list[bytes], nR: int) -> bytes:
     file_content: bytes = file
@@ -139,12 +173,13 @@ def encrypter_file(file: bytes, rKeys: list[bytes], nR: int) -> bytes:
 
     return file_content
 
-def decrypter_file(file: bytes, rKeys: list[bytes], nR: int) -> bytes:
-    file_content: bytes = file
 
+def decrypter_file(encrypted_file: bytes, rKeys: list[bytes], nR: int) -> bytes:
+    file_content: bytes = encrypted_file
+    rKeys = rKeys[::-1]
+    # Reverse the rounds
     for r in range(nR):
-        tour: bytearray = round(file_content, rKeys[r])
+        tour: bytearray = unround(file_content, rKeys[r])
         file_content = bytes(tour)
 
-    return file_content
-
+    return remove_null_bytes(file_content)
