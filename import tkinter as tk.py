@@ -9,7 +9,7 @@ from tkinter import filedialog, ttk, Radiobutton, IntVar
 file_crypt = "Aucun fichier sélectionné"
 file_decrypt = "Aucun fichier sélectionné"
 key_file = "Aucun fichier sélectionné"
-key_path =""
+key_path = ""
 
 
 # Fonction
@@ -115,7 +115,7 @@ def onglet_crypter(tab):
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
     text2_label.place(x=170, y=310)
 
-    text4_label = tk.Label(tab, text="Importer sa clé : ", relief="flat", padx=10, pady=5)
+    text4_label = tk.Label(tab, text="Importer sa clé :", relief="flat", padx=10, pady=5)
     text4_label.place(x=1, y=350)
 
 
@@ -208,6 +208,67 @@ def onglet_decrypter(tab):
 
 
 
+def onglet_a_propos(tab):
+    for i in tab.winfo_children():
+        i.destroy()
+    texte_a_propos = """
+    Crypto-Shild
+
+    Version 1.0
+
+    Développé par ABDELILAH (Patron) - LAKSHAN - BILAL
+
+    Crypto-Shild est une application de cryptage et de décryptage de fichiers 
+    basée sur des algorithmes de chiffrement robustes. POUR VOUS LES AMIS !
+
+    Pour plus d'informations, veuillez contacter crpto-shiel@aide.com
+    """
+
+    texte_propos1 = tk.Label(tab, text=texte_a_propos, relief="flat", justify="left")
+    texte_propos1.pack(fill="both", expand=True)
+
+
+
+
+def onglet_aide(tab):
+    for i in tab.winfo_children():
+        i.destroy()
+    texte_aide = """
+    Bienvenue dans Crypto-Shild !
+
+    Ce logiciel vous permet de crypter et de décrypter des fichiers en toute sécurité 
+    à l'aide d'algorithmes de chiffrement robustes.
+
+    Pour crypter un fichier :
+    1. Sélectionnez l'onglet "Crypter".
+    2. Cliquez sur le bouton "..." pour choisir le fichier que vous souhaitez crypter.
+    3. Choisissez le niveau de sécurité pour la génération de la clé.
+    4. Cliquez sur le bouton "Enregistrer" pour sauvegarder la clé générée.
+    5. Importez votre clé en cliquant sur le bouton "..." et en sélectionnant le fichier contenant la clé.
+    6. Cliquez sur le bouton "Confirmer" pour crypter le fichier sélectionné.
+
+    Pour décrypter un fichier :
+    1. Sélectionnez l'onglet "Décrypter".
+    2. Cliquez sur le bouton "..." pour choisir le fichier que vous souhaitez décrypter.
+    3. Choisissez le niveau de sécurité pour la génération de la clé. (Si vous avez la clé, sinon cela sera 
+    désactivé)
+    4. Importez votre clé en cliquant sur le bouton "..." et en sélectionnant le fichier contenant la clé.
+    5. Cliquez sur le bouton "Confirmer" pour décrypter le fichier sélectionné.
+
+    C'est tout ! Vous pouvez maintenant crypter et décrypter 
+    vos fichiers en toute sécurité avec Crypto-Shild.
+    """
+
+    texte_aide1 = tk.Label(tab, text=texte_aide, relief="flat", padx=10, pady=5, justify="left")
+    texte_aide1.pack(fill="both", expand=True)
+
+
+
+
+
+
+
+
 # Création de la fenêtre principale
 interface = tk.Tk()
 interface.title("Crypto-Shild")
@@ -228,9 +289,14 @@ onglets = ttk.Notebook(interface)
 
 onglet1 = tk.Frame(onglets)
 onglet2 = tk.Frame(onglets)
+onglet3 = tk.Frame(onglets)
+onglet4 = tk.Frame(onglets)
 
 onglets.add(onglet1, text='Crypter')
 onglets.add(onglet2, text='Décrypter')
+onglets.add(onglet3, text='A Propos')
+onglets.add(onglet4, text='Aide')
+
 
 
 def on_tab_changed(event):
@@ -241,6 +307,10 @@ def on_tab_changed(event):
         onglet_crypter(onglet1)
     elif tab_text == 'Décrypter':
         onglet_decrypter(onglet2)
+    elif tab_text == 'A Propos' :    
+        onglet_a_propos(onglet3)
+    elif tab_text == 'Aide':
+        onglet_aide(onglet4)
     
 onglets.bind('<<NotebookTabChanged>>', on_tab_changed)
 onglets.pack(expand=1, fill='both')
