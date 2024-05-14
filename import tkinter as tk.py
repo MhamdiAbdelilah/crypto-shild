@@ -272,9 +272,9 @@ def onglet_aide(tab):
 # Création de la fenêtre principale
 interface = tk.Tk()
 interface.title("Crypto-Shild")
-logo = tk.PhotoImage(file='logo.png')
-interface.iconphoto(False, logo)
-interface.resizable(False, False)
+# logo = tk.PhotoImage(file='icon.ico')
+# interface.iconphoto(False, logo)
+# interface.resizable(False, False)
 
 # Taille de la fenêtre
 largeur_cm = 15
@@ -294,7 +294,7 @@ onglet4 = tk.Frame(onglets)
 
 onglets.add(onglet1, text='Crypter')
 onglets.add(onglet2, text='Décrypter')
-onglets.add(onglet3, text='A Propos')
+onglets.add(onglet3, text='A propos')
 onglets.add(onglet4, text='Aide')
 
 
@@ -307,7 +307,7 @@ def on_tab_changed(event):
         onglet_crypter(onglet1)
     elif tab_text == 'Décrypter':
         onglet_decrypter(onglet2)
-    elif tab_text == 'A Propos' :    
+    elif tab_text == 'A propos' :    
         onglet_a_propos(onglet3)
     elif tab_text == 'Aide':
         onglet_aide(onglet4)
