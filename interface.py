@@ -4,6 +4,8 @@ import algothme as al
 from tkinter import filedialog, ttk, Radiobutton, IntVar
 
 file_path = "Aucun fichier sélectionné"
+key_file = "Aucun fichier sélectionné"
+key_path =""
 path_key = "Importer sa clé : "
 
 def open_file() -> None:
@@ -17,7 +19,7 @@ def open_file() -> None:
 
 
 def import_key() -> None:
-    global key, key_label
+    global key, key_label, key_file
     key_file = filedialog.askopenfilename(filetypes=[("Key Files", "*.key")])
     if key_file:
         key_label.config(text=f"Fichier sélectionné : {key_file}")
@@ -32,7 +34,7 @@ def save_key() -> None:
     gen_key = al.generate_key(n)
     key_path = al.get_path('key file ', '.key')
     al.export_file(key_path , gen_key)
-    save_file.config(text=f"Fichier sélectionné : {key_path}")
+    save_file.config(text=f"Cle enregistrée dans:    {key_path}")
     print("Clé enregistrée.")
     messagebox.showinfo("Information", "Clé enregistrée")
     
@@ -60,12 +62,12 @@ def confirm() -> None:
         print("Opération confirmée.")
 
 def onglet_crypter(tab):
-    global file_label, text3_label, option, key_label, save_file, path_key
+    global file_label, text3_label, option, key_label, save_file, path_key, key_path
 
     text1_label = tk.Label(tab, text="Sélectionner un document à crypter : ", relief="flat", padx=10, pady=5)
     text1_label.place(x=1, y=35)
 
-    file_label = tk.Label(tab, text=file_path, borderwidth=2, relief="sunken", padx=10, pady=5)
+    file_label = tk.Label(tab,width=60, text=f"Fichier sélectionné : {file_path}", borderwidth=2, relief="sunken", padx=10, pady=5,anchor="w")
     file_label.place(x=10, y=70)
 
     # Bouton d'importation de fichier
@@ -95,11 +97,11 @@ def onglet_crypter(tab):
 
 
     # Bouton de sauvegarde de fichier
-    btn_save = tk.Button(tab, text="Enregistrer", command=save_key)
+    btn_save = tk.Button(tab, text="Enregistrer", command=save_key, wraplength=300, justify='left')
     btn_save.config(width=10, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_save.place(x=450, y=255)
 
-    save_file = tk.Label(tab, text="Ancun enregistré", borderwidth=2, relief="sunken", padx=10, pady=5)
+    save_file = tk.Label(tab, text=f"Cle enregistrée dans:{key_path}", borderwidth=2, relief="sunken", padx=10, pady=5)
     save_file.place(x=10, y=255)
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
@@ -110,7 +112,7 @@ def onglet_crypter(tab):
 
 
 
-    key_label = tk.Label(tab, text="Aucune clé sélectionnée", borderwidth=2, relief="sunken", padx=10, pady=5)
+    key_label = tk.Label(tab, text=f"Fichier sélectionné : {key_file}", borderwidth=2, relief="sunken", padx=10, pady=5)
     key_label.place(x=10, y=360)
 
     cle_import = tk.Button(tab, text="...", command=import_key)
@@ -131,7 +133,7 @@ def onglet_decrypter(tab):
 
 
 
-    file_label = tk.Label(tab, text=file_path, borderwidth=2, relief="sunken", padx=10, pady=5)
+    file_label = tk.Label(tab, text=f"Fichier sélectionné : {file_path}", borderwidth=2, relief="sunken", padx=10, pady=5)
     file_label.place(x=10, y=70)
 
 
@@ -172,17 +174,17 @@ def onglet_decrypter(tab):
 
 
 
-    key_label = tk.Label(tab, text="Aucune clé sélectionnée", borderwidth=2, relief="sunken", padx=10, pady=5)
+    key_label = tk.Label(tab, text=f"Fichier sélectionné : {key_file}", borderwidth=2, relief="sunken", padx=10, pady=5)
     key_label.place(x=10, y=360)
 
     cle_import = tk.Button(tab, text="...", command=import_key)
     cle_import.config(width=4, height=1, bd=2, cursor="hand2", overrelief="solid")
     cle_import.place(relx=0.86, rely=0.668)
 
-    btn_confirmer = tk.Button(tab, text="Confirmer", command=confirm)
+    btn_confirmer = tk.Button(tab, text="Confirmer", command=confirm )
     btn_confirmer.config(width=10, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_confirmer.place(x=250, y=480)
-
+    
 
     # Griser les options
     check1.config(state="disabled")
@@ -225,7 +227,7 @@ def on_tab_changed(event):
         onglet_crypter(tab1)
     elif tab_text == 'Décrypter':
         onglet_decrypter(tab2)
-
+    
 tab_control.bind('<<NotebookTabChanged>>', on_tab_changed)
 tab_control.pack(expand=1, fill='both')
 
