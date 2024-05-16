@@ -2,7 +2,9 @@ from function_round import round
 
 def encrypter_file(file: bytes, rKeys: list[bytes], nR: int) -> bytes:
     file_content: bytes = file
-
+    """" Cette fonction encrypter_file crypte le contenu d'un fichier en utilisant la fonction round
+    avec les clés  pour un nombre spécifié de tours.
+    Elle retourne le contenu du fichier crypté.   """
     for r in range(nR):
         tour: bytearray = round(file_content, rKeys)
         file_content = bytes(tour)

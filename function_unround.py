@@ -6,6 +6,15 @@ from function_to_matrix44 import to_matrix44
 
 
 def unround(file: bytes, rKey: bytes) -> bytearray:
+    """ Cette fonction unround effectue l'opération inverse du cryptage .
+ Elle prend en entrée un morceau de fichier crypté et la clé de tour correspondante.
+ Pour chaque bloc de 16 octets du fichier, elle effectue les étapes suivantes :
+   - Effectue une opération de décryptage par bloc en utilisant un XOR entre chaque octet du bloc et la clé de tour.
+   - Transforme les octets obtenu en une matrice 4x4.
+   - Applique l'opération inverse de changement de ligne (mixRow) et l'opération inverse de changement de colonne (mixColome) sur la matrice.
+   - Aplati la matrice en un tableau d'octets.
+   - Étend le résultat final avec le bloc déchiffré.
+ Elle retourne le résultat final sous forme de bytearray."""
     result: bytearray = bytearray()
 
     for _i in range(0, len(file), 16):
@@ -25,7 +34,6 @@ def unround(file: bytes, rKey: bytes) -> bytearray:
         chunk_byts = bytearray(int(byte) for byte in chunk_byts)
 
         result.extend(bytes(chunk_byts))
-
     return result
 # file = b"lakshan"
 # key = b'\xc3\xce\xcad\x84\x82\x04\x90\xb5\xbf\x87\xc7\xbcZ\x99\x04'

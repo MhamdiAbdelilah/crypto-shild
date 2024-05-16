@@ -2,6 +2,9 @@ from function_unround import unround
 
 
 def decrypter_file(encrypted_file: bytes, rKeys: list[bytes], nR: int) -> bytes:
+    """ Cette fonction decrypter_file décrypte un fichier chiffré à l'aide de la fonction unround
+    en appliquant les clés de déchiffremen pour un certain nombre de tours . 
+    Elle retourne le contenu du fichier décrypté.""" 
     file_content: bytes = encrypted_file
     # rKeys = rKeys[::-1]
     # Reverse the rounds
