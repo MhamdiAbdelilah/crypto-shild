@@ -42,7 +42,7 @@ def save_key() -> None:
     al.export_file(key_path , gen_key)
     save_file.config(text=f"Cle enregistrée dans:    {key_path}")
     print("Clé enregistrée.")
-    messagebox.showinfo("Information", "Clé enregistrée")
+    messagebox.showinfo("Crypto-Shild", "Clé enregistrée")
     
 
 
@@ -62,7 +62,7 @@ def confirm() -> None:
             file_de: bytes = al.decrypter_file(file,rKeys,n)
             al.export_file(file_path,file_de)
             print('file decrypted')
-            messagebox.showinfo("Information", "Fichier Décrypter")
+            messagebox.showinfo("Crypto-Shild", "Fichier Décrypter")
             
 
         print("Opération confirmée.")
@@ -224,8 +224,8 @@ def onglet_a_propos(tab):
     Pour plus d'informations, veuillez contacter crpto-shiel@aide.com
     """
 
-    texte_propos1 = tk.Label(tab, text=texte_a_propos, relief="flat", justify="left")
-    texte_propos1.pack(fill="both", expand=True)
+    texte_propos = tk.Label(tab, text=texte_a_propos, relief="flat", justify="left")
+    texte_propos.pack(fill="both", expand=True)
 
 
 
@@ -259,8 +259,8 @@ def onglet_aide(tab):
     vos fichiers en toute sécurité avec Crypto-Shild.
     """
 
-    texte_aide1 = tk.Label(tab, text=texte_aide, relief="flat", padx=10, pady=5, justify="left")
-    texte_aide1.pack(fill="both", expand=True)
+    texte_aide = tk.Label(tab, text=texte_aide, relief="flat", padx=10, pady=5, justify="left")
+    texte_aide.pack(fill="both", expand=True)
 
 
 
@@ -272,9 +272,9 @@ def onglet_aide(tab):
 # Création de la fenêtre principale
 interface = tk.Tk()
 interface.title("Crypto-Shild")
-# logo = tk.PhotoImage(file='icon.ico')
-# interface.iconphoto(False, logo)
-# interface.resizable(False, False)
+#logo = tk.PhotoImage(file='icon.ico')
+#interface.iconphoto(False, logo)
+interface.resizable(False, False)
 
 # Taille de la fenêtre
 largeur_cm = 15
@@ -312,7 +312,11 @@ def on_tab_changed(event):
     elif tab_text == 'Aide':
         onglet_aide(onglet4)
     
+
+
+
 onglets.bind('<<NotebookTabChanged>>', on_tab_changed)
 onglets.pack(expand=1, fill='both')
+
 
 interface.mainloop()
