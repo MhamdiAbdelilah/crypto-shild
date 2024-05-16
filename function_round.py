@@ -1,4 +1,6 @@
 import numpy as np
+from function_MixColone import mixColome
+from function_MixRow import mixRow
 from function_split_by_n import split_by_n
 from function_to_matrix44 import to_matrix44
 

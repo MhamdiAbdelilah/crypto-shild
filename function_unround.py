@@ -27,6 +27,6 @@ def unround(file: bytes, rKey: bytes) -> bytearray:
         result.extend(bytes(chunk_byts))
 
     return result
-file = b"lakshan"
-key = b'\xc3\xce\xcad\x84\x82\x04\x90\xb5\xbf\x87\xc7\xbcZ\x99\x04'
-print(unround(file , key))
+# file = b"lakshan"
+# key = b'\xc3\xce\xcad\x84\x82\x04\x90\xb5\xbf\x87\xc7\xbcZ\x99\x04'
+# print(unround(file , key))
