@@ -154,6 +154,7 @@ def onglet_decrypter(tab):
     btn_import = tk.Button(tab, text="...", command=open_file)
     btn_import.config(width=4, height=1, bd=2, cursor="hand2", overrelief="solid")
     btn_import.place(relx=0.86, rely=0.113)
+    
 
     text2_label = tk.Label(tab, text="-----------------------------------------", relief="flat", padx=10, pady=5)
     text2_label.place(x=170, y=116)
@@ -219,9 +220,9 @@ def onglet_a_propos(tab):
     Développé par ABDELILAH (Patron) - LAKSHAN - BILAL
 
     Crypto-Shild est une application de cryptage et de décryptage de fichiers 
-    basée sur des algorithmes de chiffrement robustes. POUR VOUS LES AMIS !
+    basée sur des algorithmes de chiffrement robustes.
 
-    Pour plus d'informations, veuillez contacter crpto-shiel@aide.com
+    Pour plus d'informations, veuillez contacter crypto-shild@gmail.com
     """
 
     texte_propos = tk.Label(tab, text=texte_a_propos, relief="flat", justify="left")
@@ -257,6 +258,8 @@ def onglet_aide(tab):
 
     C'est tout ! Vous pouvez maintenant crypter et décrypter 
     vos fichiers en toute sécurité avec Crypto-Shild.
+
+    Pour plus d'informations, veuillez contacter crypto-shild@aide.com
     """
 
     texte_aide = tk.Label(tab, text=texte_aide, relief="flat", padx=10, pady=5, justify="left")
